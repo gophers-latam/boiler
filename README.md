@@ -25,7 +25,7 @@ boiler golang.org/x/example/hello mi.dominio/hola mi-hola
 
 - Para estar disponible via ```$GOPATH/bin```
 ```shell
-go install github.com/gophers-latam/boiler
+go install github.com/gophers-latam/boiler@latest
 ```
 
 ## TODO:
