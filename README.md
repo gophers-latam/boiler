@@ -28,6 +28,12 @@ boiler golang.org/x/example/hello mi.dominio/hola mi-hola
 go install github.com/gophers-latam/boiler@latest
 ```
 
+**Plantillas propuestas:**
+- [gophers-latam/minimal](https://github.com/gophers-latam/minimal)
+- [gophers-latam/minimalchi](https://github.com/gophers-latam/minimalchi)
+- [gophers-latam/small-template](https://github.com/gophers-latam/small-template)
+- **Hexagonal-arch** [```pendiente```]  por [@AndresXLP](https://github.com/AndresXLP)
+
 ## TODO:
 
 - [ ] Mejorar salida de ayuda.

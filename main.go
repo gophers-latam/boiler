@@ -61,17 +61,17 @@ func main() {
 	needMkdir := err != nil
 
 	// Descargar fuente
-	var stdout, stderr bytes.Buffer
+	var stdOut, stdErr bytes.Buffer
 	cmd := exec.Command("go", "mod", "download", "-json", srcModVers)
-	cmd.Stdout, cmd.Stderr = &stdout, &stderr
+	cmd.Stdout, cmd.Stderr = &stdOut, &stdErr
 	if err := cmd.Run(); err != nil {
-		msg := fmt.Sprintf("go mod download -json %s: %v\n%s%s", srcModVers, err, stderr.Bytes(), stdout.Bytes())
+		msg := fmt.Sprintf("go mod download -json %s: %v\n%s%s", srcModVers, err, stdErr.Bytes(), stdOut.Bytes())
 		internal.Fatalf(msg+"\n%v", err)
 	}
 
 	info := &internal.Info{}
-	if err := json.Unmarshal(stdout.Bytes(), &info); err != nil {
-		msg := fmt.Sprintf("go mod download -json %s: salida JSON no válida: %v\n%s%s", srcMod, err, stderr.Bytes(), stdout.Bytes())
+	if err := json.Unmarshal(stdOut.Bytes(), &info); err != nil {
+		msg := fmt.Sprintf("go mod download -json %s: salida JSON no válida: %v\n%s%s", srcMod, err, stdErr.Bytes(), stdOut.Bytes())
 		internal.Fatalf(msg+"\n%v", err)
 	}
 
