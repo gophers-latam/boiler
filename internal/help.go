@@ -13,6 +13,7 @@ const (
 	~ minimal: https://github.com/gophers-latam/minimal
 	~ minimalchi: https://github.com/gophers-latam/minimalchi
 	~ small-template: https://github.com/gophers-latam/small-template
+	~ hexagonal: https://github.com/gophers-latam/hexagonal
 	`
 )
 

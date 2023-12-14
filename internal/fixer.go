@@ -16,7 +16,7 @@ import (
 func fix(data []byte, file string, srcMod, dstMod string, isRoot bool) []byte {
 	fset := token.NewFileSet()
 	pfile, err := parser.ParseFile(fset, file, data, parser.ImportsOnly)
-	Fatalf("análisis fuente módulo:\n%s", err)
+	CheckErr("análisis fuente módulo:\n%s", err)
 
 	bf := NewBuffer(data)
 	at := func(pos token.Pos) int {
@@ -60,7 +60,7 @@ func fix(data []byte, file string, srcMod, dstMod string, isRoot bool) []byte {
 // reescribir contenido de go.mod para reemplazar srcMod con dstMod
 func fixMod(data []byte, srcMod, dstMod string) []byte {
 	f, err := modfile.ParseLax("go.mod", data, nil)
-	Fatalf("análisis módulo fuente:\n%s", err)
+	CheckErr("análisis módulo fuente:\n%s", err)
 
 	_ = f.AddModuleStmt(dstMod)
 	new, err := f.Format()
@@ -70,16 +70,13 @@ func fixMod(data []byte, srcMod, dstMod string) []byte {
 	return new
 }
 
-// logs helpers
-
-func Fatal(err error) {
+// logs helper
+func CheckErr(msg string, err error) {
 	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func Fatalf(msg string, err error) {
-	if err != nil {
-		log.Fatalf(msg, err)
+		if msg != "" {
+			log.Fatalf(msg, err)
+		} else {
+			log.Fatal(err)
+		}
 	}
 }

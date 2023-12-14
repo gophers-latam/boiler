@@ -50,25 +50,25 @@ func VerifyPath(path, modType string) {
 		msg = "nombre módulo destino no válido: %v"
 	}
 	err := module.CheckPath(path)
-	Fatalf(msg, err)
+	CheckErr(msg, err)
 }
 
 // Copiar de caché del módulo en un nuevo directorio y realizar edicion.
 func Edit(info *Info, dir, srcMod, dstMod string) error {
 	err := filepath.WalkDir(info.Dir, func(src string, ent fs.DirEntry, err error) error {
-		Fatal(err)
+		CheckErr("", err)
 
 		rel, err := filepath.Rel(info.Dir, src)
-		Fatal(err)
+		CheckErr("", err)
 		dst := filepath.Join(dir, rel)
 		if ent.IsDir() {
 			err := os.MkdirAll(dst, 0o777)
-			Fatal(err)
+			CheckErr("", err)
 			return nil
 		}
 
 		data, err := os.ReadFile(src)
-		Fatal(err)
+		CheckErr("", err)
 
 		isRoot := !strings.Contains(rel, string(filepath.Separator))
 		if strings.HasSuffix(rel, ".go") {
@@ -80,7 +80,7 @@ func Edit(info *Info, dir, srcMod, dstMod string) error {
 
 		//#nosec gosec:G306
 		err = os.WriteFile(dst, data, 0o666)
-		Fatal(err)
+		CheckErr("", err)
 
 		return nil
 	})

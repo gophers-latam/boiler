@@ -56,7 +56,7 @@ func main() {
 	dest, err := os.ReadDir(dir)
 	if err == nil && len(dest) > 0 {
 		msg := fmt.Sprintf("directorio destino %s existe y no está vacío", dir)
-		internal.Fatalf(msg+"\n%v", err)
+		internal.CheckErr(msg+"\n%v", err)
 	}
 	needMkdir := err != nil
 
@@ -66,23 +66,23 @@ func main() {
 	cmd.Stdout, cmd.Stderr = &stdOut, &stdErr
 	if err := cmd.Run(); err != nil {
 		msg := fmt.Sprintf("go mod download -json %s: %v\n%s%s", srcModVers, err, stdErr.Bytes(), stdOut.Bytes())
-		internal.Fatalf(msg+"\n%v", err)
+		internal.CheckErr(msg+"\n%v", err)
 	}
 
 	info := &internal.Info{}
 	if err := json.Unmarshal(stdOut.Bytes(), &info); err != nil {
 		msg := fmt.Sprintf("go mod download -json %s: salida JSON no válida: %v\n%s%s", srcMod, err, stdErr.Bytes(), stdOut.Bytes())
-		internal.Fatalf(msg+"\n%v", err)
+		internal.CheckErr(msg+"\n%v", err)
 	}
 
 	if needMkdir {
 		err := os.MkdirAll(dir, 0o777)
-		internal.Fatal(err)
+		internal.CheckErr("", err)
 	}
 
 	// Editar destino
 	err = internal.Edit(info, dir, srcMod, dstMod)
-	internal.Fatal(err)
+	internal.CheckErr("", err)
 
 	// Salida exitosa
 	log.Printf("Se inicializó: %s en %s", dstMod, dir)
